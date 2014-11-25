@@ -27,7 +27,7 @@ class PathDispatcher(object):
 #            parliaments = json.load(f)
 #        for parl, conf in parliaments.items():
 #            self.instances[parl] = create_app(parl, conf)
-        self.instances['ovolby'] = create_app()
+        self.instances['ovolby'] = create_app({})
 
     def __call__(self, environ, start_response):
         """Returns application instance respective to the parliament in
