@@ -1,0 +1,10 @@
+election_post_
+    iconv -f "windows-1250" -t "utf-8" EP2004ciselniky/cnumnuts.xml > EP2004ciselniky/cnumnuts_utf8.xml
+    iconv -f "windows-1250" -t "utf-8" EP2004ciselniky/epcoco.xml > EP2004ciselniky/epcoco_utf8.xml
+areas_extractor_
+    iconv -f "windows-1250" -t "utf-8" EP2004reg/eprkl.xml > EP2004reg/eprkl_utf8.xml
+options_extractor_
+
+result_extractor_
+
+bubble_up2_
