@@ -4,7 +4,7 @@ import api
 import common_functions as cf
 
 election_id = 'europarl.europa.eu-cz-2004'
-path = 'EP2004reg/'
+path = '../data/EP2004reg/'
 
 with open(path + "eprkl_utf8.xml") as fd:
         obj = xmltodict.parse(fd.read())
@@ -37,4 +37,4 @@ for item in obj['EP_RKL']['EP_RKL_ROW']:
         'identifier': item['ESTRANA'],
         'election_id': 'europarl.europa.eu-cz-2004'
     }
-    cf.put_single_property_if_not_exist("options", option, {"id": option['id']}, 'other_identifiers', identifier)
+    cf.put_property_if_not_exist("options", option, {"id": option['id']}, 'other_identifiers', identifier)

@@ -1,3 +1,4 @@
+#does not work properly because of missing data from the official opendata website
 import xmltodict
 import api
 import common_functions as cf

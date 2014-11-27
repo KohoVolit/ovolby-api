@@ -3,7 +3,7 @@ import api
 import common_functions as cf
 
 election_id = 'europarl.europa.eu-cz-2009'
-path = 'EP2009ciselniky/'
+path = '../data/EP2009ciselniky/'
 
 with open(path + "cnumnuts_utf8.xml") as fd:
     nuts = xmltodict.parse(fd.read())
@@ -94,6 +94,8 @@ for row in towns['EP_COCO']['EP_COCO_ROW']:
             'election_id': election_id
         }
         cf.put_property_if_not_exist("areas", area, {"id": area['id']}, 'parents', parent)
+        if row['OBEC'] == '551376':
+            print(row)
     mindistr = int(row['MINOKRSEK1'])
     maxdistr = int(row['MAXOKRSEK1'])
     for distr in range(mindistr, maxdistr+1):

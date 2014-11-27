@@ -4,7 +4,7 @@ import slugify
 import api
 import math
 
-election_id = "europarl.europa.eu-cz-2009"
+election_id = "europarl.europa.eu-cz-2004"
 
 def adding(result,area_id,data,parents,election_id):
     try:

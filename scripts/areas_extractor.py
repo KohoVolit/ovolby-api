@@ -3,7 +3,7 @@ import api
 import common_functions as cf
 
 election_id = 'europarl.europa.eu-cz-2014'
-path = 'EP2014ciselniky20140425/'
+path = '../data/EP2014ciselniky20140425/'
 
 with open(path + "cnumnuts_utf8.xml") as fd:
     nuts = xmltodict.parse(fd.read())

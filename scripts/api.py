@@ -9,7 +9,10 @@ Contains functions to make API requests easily.
 __all__ = ['authorize', 'deauthorize', 'get', 'post', 'put', 'patch', 'delete']
 
 SERVER_NAME = '127.0.0.1:5000'
+#SERVER_NAME = 'api.czechia.tk'
+
 #SERVER_CERT = 'server_cert_prod.pem'
+#SERVER_CERT = 'apache_cert.pem'
 PAYLOAD_HEADERS = {
     'Content-Type': 'application/json',
 }
@@ -55,8 +58,10 @@ def get(resource, **kwargs):
     #print(_endpoint(resource, 'GET'))
     resp = requests.get(
         _endpoint(resource, 'GET'),
-        params=_jsonify_dict_values(kwargs)#,
+        params=_jsonify_dict_values(kwargs),
         #verify=SERVER_CERT
+        verify=False
+        
     )
     #resp.raise_for_status()
     return resp.json()
@@ -72,8 +77,9 @@ def post(resource, data, **kwargs):
         _endpoint(resource, 'POST'),
         params=_jsonify_dict_values(kwargs),
         data=json.dumps(data),
-        headers=PAYLOAD_HEADERS#,
+        headers=PAYLOAD_HEADERS,
         #verify=SERVER_CERT
+        verify=False
     )
     #resp.raise_for_status()
     return resp.json()
@@ -88,8 +94,9 @@ def put(resource, data, **kwargs):
         _endpoint(resource, 'PUT'),
         params=_jsonify_dict_values(kwargs),
         data=json.dumps(data),
-        headers=PAYLOAD_HEADERS#,
+        headers=PAYLOAD_HEADERS,
         #verify=SERVER_CERT
+        verify=False
     )
     #resp.raise_for_status()
     return resp.json()
@@ -104,8 +111,9 @@ def patch(resource, data, **kwargs):
         _endpoint(resource, 'PATCH'),
         params=_jsonify_dict_values(kwargs),
         data=json.dumps(data),
-        headers=PAYLOAD_HEADERS#,
+        headers=PAYLOAD_HEADERS,
         #verify=SERVER_CERT
+        verify=False
     )
     #resp.raise_for_status()
     return resp.json()
