@@ -1,2 +1,4 @@
 dev/*
 data/*
+smarty/templates_c/*
+www/settings.php

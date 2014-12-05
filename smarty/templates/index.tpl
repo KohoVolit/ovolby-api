@@ -4,7 +4,7 @@
 <div class="modal-dialog modal-lg">
   <div class="modal-content">
     <div class="modal-header" id="infobox_header">
-      <h1>Volební výsledky flexibilně - ukázky, projekt ve vývoji</h1>
+      <h1>Volební výsledky flexibilně - ukázky</h1>
       Aplikace je umístěna na dočasné doméně.
       <h3>API</h3>
       <p>Výsledky voleb jsou nejen uloženy v databázy, ale jsou strojově čitelné pomocí <strong>API</strong>. Je možné pomocí něho jak číst data, tak (s příslušným oprávněním) do databáze zapisovat. U jednotlivých území jsou dodržovány kódy z ČSÚ. API umožňuje budovat získávat data velice flexibilně i budovat další aplikace nad těmito daty.
@@ -28,8 +28,8 @@
       <p>Jako základní kámen aplikace je libovolné zobrazení dat v tabulkách, např.
       <ul>
       <li><a href="tables.php?p={%22where%22:{%22area_classification%22:%22county%22,%22election_id%22:%22europarl.europa.eu-cz-2004%22},%22layout%22:{%22row%22:%22areas%22,%22column%22:%22options%22}}&format=html">Evropské volby 2014 po okresech</a></li>
-      <li><a href="tables.php?p={%22where%22:{%22area_id%22:%22582786%22},%22layout%22:{%22row%22:%22options%22,%22column%22:%22elections%22}}&format=html">Evropské volby 2004-2014 v Brně</a></li>
-      <li><a href="tables.php?p={%22where%22:{%22area_classification%22:%22province%22},%22layout%22:{%22row%22:%22areas%22,%22column%22:%22elections%22}}&format=html">Účast v evropských volbách 2004-2014 po krajích</a></li>
+      <li><a href="tables.php?p={%22where%22:{%22area_id%22:%22582786%22},%22layout%22:{%22row%22:%22options%22,%22column%22:%22elections%22}}&format=html">Všechny volby 2004-2014 v Brně</a></li>
+      <li><a href="tables.php?p={%22where%22:{%22area_classification%22:%22province%22,%22election_id%22:{%22$in%22:[%22europarl.europa.eu-cz-2004%22,%22europarl.europa.eu-cz-2009%22,%22europarl.europa.eu-cz-2014%22]}},%22layout%22:{%22row%22:%22areas%22,%22column%22:%22elections%22}}&format=html">Účast v evropských volbách 2004-2014 po krajích</a></li>
       </ul>
       <p>Tabulky lze řadit dle jednotlivých sloupců</p>
       <p>Data z tabulek se dají stáhnout do <code>csv</code> a <code>csv pro český Excel</code> (tj. v kódování pro Windows a se středníky místo čárek).</p>

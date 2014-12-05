@@ -5,7 +5,7 @@ $settings['api_server'] = 'http://api.czechia.tk/ovolby/';
 $settings['api_server'] = 'http://localhost:5000/ovolby/';
 $settings['smarty_path'] = '/usr/local/lib/php/Smarty/libs/Smarty.class.php';
 $settings['page2smarty_path'] = '../smarty/';
-$settings['www_server'] = 'http://api.czechia.tk/';
+$settings['www_server'] = 'http://czechia.tk/';
 $settings['www_server'] = 'http://localhost/michal/project/ovolby-api/www/';
 
 // table download

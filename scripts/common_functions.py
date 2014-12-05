@@ -22,13 +22,21 @@ def get_all_items(resource, **kwargs):
 
 def post_if_not_exist(resource, obj, w):
     r = api.get(resource,where=w)
-    if len(r['_items']) == 0:
-        api.post(resource, obj)
+    try:
+        if len(r['_items']) == 0:
+            api.post(resource, obj)
+    except:
+        pass
 
 
 # into list of properties, as next item
 def put_property_if_not_exist(resource, obj, w, property_name, prop):
     r = api.get(resource, where=w)
+#    print(r)
+#    print(obj)
+#    print(w)
+#    print(property_name)
+#    print(prop)
     if len(r['_items']) == 0:
         obj[property_name] = [prop]
         r = api.post(resource, obj)
@@ -59,7 +67,7 @@ def put_single_property_if_not_exist(resource, obj, w, property_name, prop):
     r = api.get(resource, where=w)
     if len(r['_items']) == 0:
         obj[property_name] = prop
-        r = api.post(resource, obj)  
+        r = api.post(resource, obj) 
         obj_old = r['_items'][0]
     else:
         obj_old = r['_items'][0]

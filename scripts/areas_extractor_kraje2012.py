@@ -2,13 +2,25 @@ import xmltodict
 import api
 import common_functions as cf
 
-election_id = 'europarl.europa.eu-cz-2004'
-path = '../data/EP2004ciselniky/'
+#election_id = 'cz-kraje-2012'
+path = '../data/ciselniky20121010/'
 
-with open(path + "cnumnuts_utf8.xml") as fd:
-    nuts = xmltodict.parse(fd.read())
-with open(path + "epcoco_utf8.xml") as fd:
-    towns = xmltodict.parse(fd.read())
+nuts = []
+with open(path + "CNUMNUTS_utf8.csv") as fd:
+    csvr = csv.reader(fd)
+    i = 0
+    for row in csvr:
+        if i > 0:
+            nuts.append(row)
+        i = i + 1
+towns = []
+with open(path + "KZCOCO_utf8.csv") as fd:
+    csvr = csv.reader(fd)
+    i = 0
+    for row in csvr:
+        if i > 0:
+            towns.append(row)
+        i = i + 1
 
 def special_towns(okres, obec):
     if okres in ['1100','6202','8106','3203']:
@@ -23,14 +35,15 @@ def special_towns(okres, obec):
     return False
 
 id2nuts = {}
-for row in nuts['CNUMNUTS']['CNUMNUTS_ROW']:
-    id2nuts[row['NUMNUTS']] = row
+for row in nuts:
+    id2nuts[row[0]] = row
 
-for row in towns['EP_COCO']['EP_COCO_ROW']:
+for row in towns:
+    election_id = 'cz-kraje-'+row[0]+'-2012'
     #provinces
     area = {
-        'id': row['KRAJ'],
-        'name': id2nuts[row['KRAJ']]['NAZEVNUTS'],
+        'id': row[0],
+        'name': id2nuts[row[0]][2],
         'classification': 'province'
     }
         #correct for Praha
@@ -38,19 +51,19 @@ for row in towns['EP_COCO']['EP_COCO_ROW']:
         area['id'] = '1000'
     cf.post_if_not_exist("areas", area, {"id": area['id']})
     parent = {
-        'area_id': 'cz',
+        'area_id': 'cz-kraje',
         'election_id': election_id
     }
     cf.put_property_if_not_exist("areas", area, {"id": area['id']}, 'parents', parent)
     #counties
     area = {
-        'id': row['OKRES'],
-        'name': id2nuts[row['OKRES']]['NAZEVNUTS'],
+        'id': row[1],
+        'name': id2nuts[row[1]][2],
         'classification': 'county'
     }    
     cf.post_if_not_exist("areas", area, {"id": area['id']})
     parent = {
-        'area_id': row['KRAJ'],
+        'area_id': row[0],
         'election_id': election_id
     }
     #correct for Praha
@@ -58,7 +71,7 @@ for row in towns['EP_COCO']['EP_COCO_ROW']:
         parent['area_id'] = '1000'
     cf.put_property_if_not_exist("areas", area, {"id": area['id']}, 'parents', parent)
     #special towns vs. normal
-    special = special_towns(row['OKRES'], row['OBEC'])
+    special = special_towns(row[1], row[3])
     if special:
         area = {
             'id': special['id'],
@@ -67,13 +80,13 @@ for row in towns['EP_COCO']['EP_COCO_ROW']:
         }    
         cf.post_if_not_exist("areas", area, {"id": area['id']})
         parent = {
-            'area_id': row['OKRES'],
+            'area_id': row[1],
             'election_id': election_id
         }
         cf.put_property_if_not_exist("areas", area, {"id": area['id']}, 'parents', parent)  
         area = {
-            'id': row['OBEC'],
-            'name': row['NAZEVOBCE'],
+            'id': row[3],
+            'name': row[4],
             'classification': 'municipal district'
         }
         cf.post_if_not_exist("areas", area, {"id": area['id']})
@@ -84,27 +97,29 @@ for row in towns['EP_COCO']['EP_COCO_ROW']:
         cf.put_property_if_not_exist("areas", area, {"id": area['id']}, 'parents', parent)
     else:   #normal
         area = {
-            'id': row['OBEC'],
-            'name': row['NAZEVOBCE'],
+            'id': row[3],
+            'name': row[4],
             'classification': 'municipality'
         }
         cf.post_if_not_exist("areas", area, {"id": area['id']})
         parent = {
-            'area_id': row['OKRES'],
+            'area_id': row[1],
             'election_id': election_id
         }
         cf.put_property_if_not_exist("areas", area, {"id": area['id']}, 'parents', parent)
-    mindistr = int(row['MINOKRSEK1'])
-    maxdistr = int(row['MAXOKRSEK1'])
+        if row[3] == '551376':
+            print(row)
+    mindistr = int(row[6])
+    maxdistr = int(row[7])
     for distr in range(mindistr, maxdistr+1):
         area = {
-            'id': row['OBEC']+'-'+str(distr),
-            'name': row['NAZEVOBCE']+' - '+str(distr),
+            'id': row[3]+'-'+str(distr),
+            'name': row[4]+' - '+str(distr),
             'classification': 'district'
         }
         cf.post_if_not_exist("areas", area, {"id": area['id']})
         parent = {
-            'area_id': row['OBEC'],
+            'area_id': row[3],
             'election_id': election_id
         }
         cf.put_property_if_not_exist("areas", area, {"id": area['id']}, 'parents', parent)

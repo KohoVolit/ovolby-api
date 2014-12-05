@@ -43,13 +43,13 @@ resource = {
         'counts': {
             'type': 'list',
             'schema': {
-                'option_id': {
+                'option_identifier': {
                     'type': 'string',
                     'required': True,
                     'empty': False,
                     'data_relation': {
                         'resource': 'options',
-                        'field':'id'
+                        'field':'identifier'
                     }
                 },
                 'votes': {

@@ -8,3 +8,60 @@ options_extractor_
 result_extractor_
 
 bubble_up2_
+
+
+Kraje:
+cd /home/michal/dev/dbfpy-2.3.0
+python2
+exec(open('dbf2csv.py').read())
+
+kraje.txt (manually)
+
+election_post_kraje2012
+
+~/dev/dbfpy-2.3.0$ iconv -f  cp852 -t utf-8 CNUMNUTS.csv > CNUMNUTS_utf8.csv
+~/dev/dbfpy-2.3.0$ iconv -f  cp852 -t utf-8 KZCOCO.csv > KZCOCO_utf8.csv
+
+
+
+
+https://github.com/KohoVolit/visegrad-parliament-api/blob/master/init_db.js
+
+exec(open("election_post_ep2014.py").read())
+exec(open("election_post_ep2009.py").read())
+exec(open("election_post_ep2004.py").read())
+exec(open("election_post_kraje2012.py").read())
+exec(open("areas_extractor_ep2014.py").read())
+exec(open("areas_extractor_ep2009.py").read())
+exec(open("areas_extractor_ep2004.py").read())
+exec(open("areas_extractor_kraje2012.py").read())
+exec(open("options_extractor_ep2014.py").read())
+exec(open("options_extractor_ep2009.py").read())
+exec(open("options_extractor_ep2004.py").read())
+exec(open("options_extractor_kraje2012.py").read())
+exec(open("result_extractor_ep2014.py").read())
+exec(open("result_extractor_ep2009_csv.py").read())
+exec(open("result_extractor_ep2004_csv.py").read())
+exec(open("result_extractor_kraje2012_csv.py").read())
+exec(open("bubble_up2_ep2014.py").read())
+exec(open("bubble_up2_ep2009.py").read())
+exec(open("bubble_up2_ep2004.py").read())
+exec(open("bubble_up2_kraje2012.py").read())
+    problem u bubble_up2: opraveno u psp2010 (radky 23-28!)
+
+exec(open("election_post_kraje2008.py").read())
+python2
+exec(open('dbf2csv.py').read())         CNUMNUTS.DBF
+exec(open('dbf2csv.py').read())         KZCOCO.DBF
+~/project/ovolby-api/data/ciselnikyKZ2008$ iconv -f  cp852 -t utf-8 KZCOCO.csv > KZCOCO_utf8.csv
+~/project/ovolby-api/data/ciselnikyKZ2008$ iconv -f  cp852 -t utf-8 CNUMNUTS.csv > CNUMNUTS_utf8.csv
+exec(open("areas_extractor_kraje2008.py").read())
+~/project/ovolby-api/data/kz2008_data_dbf$ iconv -f  cp852 -t utf-8 KZRKL.csv > KZRKL_utf8.csv
+exec(open("options_extractor_kraje2008.py").read())
+exec(open('dbf2csv.py').read())
+    Converting KZT6.dbf to csv
+exec(open('dbf2csv.py').read())
+    Converting KZT6p.dbf to csv
+exec(open("result_extractor_kraje2008_csv.py").read())
+
+~/project/ovolby-api/data$ mongodump --db ovolby --out ovolby-3ep-2kraje.backup

@@ -4,7 +4,7 @@ import api
 import common_functions as cf
 
 election_id = 'europarl.europa.eu-cz-2014'
-path = 'EP2014reg20140521/'
+path = '../data/EP2014reg20140521/'
 
 with open(path + "eprkl_utf8.xml") as fd:
         obj = xmltodict.parse(fd.read())
@@ -16,25 +16,31 @@ for item in obj['EP_RKL']['EP_RKL_ROW']:
         'identifier': item['VSTRANA'],
         'name': item['NAZEVCELK'],
         'type': 'organization',
-        'other_names': [
+    }
+    cf.post_if_not_exist("options", option, {"identifier": option['identifier']})
+
+    other_names = [
             {
                 'name': item['NAZEV_STRE'],
-                'note': 'short_name_60'
+                'note': 'short_name_60',
+                'election_id': election_id
             },
             {
                 'name': item['ZKRATKAE30'],
-                'note': 'short_name_30'
+                'note': 'short_name_30',
+                'election_id': election_id
             },
             {
                 'name': item['ZKRATKAE8'],
-                'note': 'abbreviation'        
+                'note': 'abbreviation',
+                'election_id': election_id    
             }
         ]
-    }
-    cf.post_if_not_exist("options", option, {"id": option['id']})
+    for other_name in other_names:
+        cf.put_property_if_not_exist("options", option, {"identifier": option['identifier']}, 'other_names', other_name) 
 
     identifier = {
         'identifier': item['ESTRANA'],
-        'election_id': 'europarl.europa.eu-cz-2014'
+        'election_id': election_id
     }
-    cf.put_single_property_if_not_exist("options", option, {"id": option['id']}, 'other_identifiers', identifier)
+    cf.put_property_if_not_exist("options", option, {"identifier": option['identifier']}, 'other_identifiers', identifier)

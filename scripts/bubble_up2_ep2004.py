@@ -33,9 +33,9 @@ def adding(result,area_id,data,parents,election_id):
 
             for s in result['counts']:
                 try:
-                    data[parent_id]['counts'][s['option_id']] = data[parent_id]['counts'][s['option_id']] + int(s['votes'])
+                    data[parent_id]['counts'][s['option_identifier']] = data[parent_id]['counts'][s['option_identifier']] + int(s['votes'])
                 except:
-                    data[parent_id]['counts'][s['option_id']] = int(s['votes']) 
+                    data[parent_id]['counts'][s['option_identifier']] = int(s['votes']) 
 
             data = adding(result,parent_id,data,parents,election_id)
             
@@ -70,7 +70,7 @@ for area_id in data:
     for s in data[area_id]['summary']:
         item['summary'].append({'name':s,'value':data[area_id]['summary'][s]})
     for s in data[area_id]['counts']:
-        item['counts'].append({'option_id':s,'votes':data[area_id]['counts'][s]})
+        item['counts'].append({'option_identifier':s,'votes':data[area_id]['counts'][s]})
     out.append(item)
 
 api.post("results",out)        

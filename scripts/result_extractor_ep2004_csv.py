@@ -10,7 +10,7 @@ parties = []
 for p in ar:
     for oi in p['other_identifiers']:
         if oi['election_id'] == election_id:
-            n2id[oi['identifier']] = p['id']
+            n2id[oi['identifier']] = p['identifier']
             parties.append(oi['identifier'])
 
 summary_items = ['eligibles','attendees','received_ballots','valid_votes']
@@ -41,7 +41,7 @@ for row in data:
         summary.append({'name':item,'value':int(row[item])})
     counts = []
     for party in parties:
-        counts.append({'votes': int(row[party]), 'option_id': n2id[party]})
+        counts.append({'votes': int(row[party]), 'option_identifier': n2id[party]})
     result = {
         "election_id": election_id,
         "area_id": row['municipality']+'-'+row['district'],

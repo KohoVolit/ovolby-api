@@ -14,7 +14,7 @@ db.areas.ensureIndex({"classification": 1});
 
 // create indexes on Elections
 db.createCollection("elections", {"primaryKey": {"id": 1, "_id": 1}});
-db.areas.ensureIndex({"name": 1});
+db.elections.ensureIndex({"name": 1});
 db.areas.ensureIndex({"organization_id": 1});
 
 
@@ -31,9 +31,8 @@ db.createCollection("results", {"primaryKey": {"_id": 1}});
 db.results.ensureIndex({"election_id": 1, "area_id": 1}, {"unique": true, "sparse": true});
 
 // create indexes on Options
-db.createCollection("options", {"primaryKey": {"id": 1, "_id": 1}});
+db.createCollection("options", {"primaryKey": {"identifier": 1, "_id": 1}});
 db.options.ensureIndex({"name": 1});
 db.options.ensureIndex({"type": 1});
-db.options.ensureIndex({"election_id": 1, "area_id": 1}, {"unique": true, "sparse": true});
 
 

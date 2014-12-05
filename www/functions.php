@@ -73,21 +73,32 @@ function get_names($api_server,$resource,$ids) {
   
   $parameters = new StdClass();
   $parameters->where = new StdClass();
-  $parameters->where->id = new StdClass();
+  if ($resource == 'options')
+    $parameters->where->identifier = new StdClass();
+  else
+    $parameters->where->id = new StdClass();
   $in = '$in';
   $ids = array_map('strval', $ids);
-  $parameters->where->id->$in = $ids;
+  if ($resource == 'options')
+    $parameters->where->identifier->$in = $ids;
+  else
+    $parameters->where->id->$in = $ids;
   
   $parameters->projection = new StdClass();
   $parameters->projection->name= 1;
   $parameters->projection->id = 1;
+  $parameters->projection->identifier = 1;
   global $smarty;
   //print_r($parameters);die();
   $items = get_all_items($api_server,$resource,$parameters,$smarty,0);
-  
+  //print_r($items);
   foreach($items as $item) {
-    $names[$item->id] = $item->name;
+    if ($resource == 'options')
+      $names[$item->identifier] = $item->name;
+    else
+      $names[$item->id] = $item->name;
   }
+  //print_r($names);
   return $names;
 }
 
@@ -95,7 +106,10 @@ function get_names($api_server,$resource,$ids) {
 * areas -> area_id
 */
 function resource2id($resource) {
-  return substr($resource,0,-1) . '_id';
+  if ($resource == 'options')
+    return substr($resource,0,-1) . '_identifier';
+  else
+    return substr($resource,0,-1) . '_id';
 }
 
 function tableize($items,$layout,$option_filter=false) {
@@ -104,8 +118,8 @@ function tableize($items,$layout,$option_filter=false) {
     $layout_column = resource2id($layout->column);
     foreach($items as $item) {
         foreach($item->counts as $count) {
-          $option_id = $count->option_id;
-          $item->option_id = $count->option_id;
+          $option_identifier = $count->option_identifier;
+          $item->option_identifier = $count->option_identifier;
           if (isset($table['data'][$item->$layout_row][$item->$layout_column]))
             $table['data'][$item->$layout_row][$item->$layout_column] = $table['data'][$item->$layout_row][$item->$layout_column] + $count->votes;
           else

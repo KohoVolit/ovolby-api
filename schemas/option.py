@@ -11,7 +11,6 @@ resource = {
     'schema': {
         'id': {
             'type':'string',
-             'unique': True,
              'empty': False,
              'required': True
         },
@@ -20,16 +19,37 @@ resource = {
             'nullable': True
         },
         'identifier': {
-			# An issued identifier
-			'type': 'string',
-			'nullable': True,
-		},
+            # An issued identifier
+            'type': 'string',
+            'nullable': True,
+        },
         'other_names': {
             # Alternate or former names
             'type': 'list',
             'schema': {
                 'type': 'dict',
-                'schema': other_name.schema,
+                'schema': {
+                    'name': {
+                        # An alternate or former name
+                        'type': 'string',
+                        'required': True,
+                        'empty': False,
+                    },
+                    'note': {
+                        # A note, e.g. 'Birth name'
+                        'type': 'string',
+                        'nullable': True,
+                    },
+                    'election_id': {
+                        'type': 'string',
+                        'required': True,
+                        'empty': False,
+                        'data_relation': {
+                            'resource': 'elections',
+                            'field': 'id',
+                        }
+                    }
+                }
             },
             'unique_elements': True,
         },
@@ -42,11 +62,11 @@ resource = {
         'person': person.resource['schema'],
         'organization': organization.resource['schema'],
         'other_identifiers': {
-			# Alternate or former names
-			'type': 'list',
-			'schema': {
-				'type': 'dict',
-				'schema': {
+            # Alternate or former names
+            'type': 'list',
+            'schema': {
+                'type': 'dict',
+                'schema': {
                     'identifier': {
                         'type': 'string',
                         'required': True,
@@ -62,8 +82,8 @@ resource = {
                         }
                     }
                 }
-			},
-			'unique_elements': True,
-		},
+            },
+            'unique_elements': True,
+        },
     }
 }     

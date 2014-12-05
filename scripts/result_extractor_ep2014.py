@@ -3,36 +3,36 @@ import api
 import common_functions as cf
 
 election_id = 'europarl.europa.eu-cz-2014'
-path = 'EP2014okrsky/'
+path = '../data/EP2014okrsky/'
 
 # SUMMARY
-#with open(path + "ept2.xml") as fd:
-#    sums = xmltodict.parse(fd.read())
+with open(path + "ept2.xml") as fd:
+    sums = xmltodict.parse(fd.read())
 
-#for row in sums['EP_T2']['EP_T2_ROW']:
-#    result = {
-#        'election_id': election_id,
-#        'area_id': row['OBEC']+'-'+row['OKRSEK'],
-#        'area_classification': 'district'
-#    }
-#    cf.post_if_not_exist("results", result, {"election_id": result['election_id'], "area_id": result['area_id']})
-#    summary = [
-#        {'name': 'eligibles', 'value': int(row['VOL_SEZNAM'])},
-#        {'name': 'attendees', 'value': int(row['VYD_OBALKY'])},
-#        {'name': 'received_ballots', 'value': int(row['ODEVZ_OBAL'])},
-#        {'name': 'valid_votes', 'value': int(row['PL_HL_CELK'])}
-#    ]
-#    cf.put_single_property_if_not_exist("results", result, {"election_id": result['election_id'], "area_id": result['area_id']}, 'summary', summary)
+for row in sums['EP_T2']['EP_T2_ROW']:
+    result = {
+        'election_id': election_id,
+        'area_id': row['OBEC']+'-'+row['OKRSEK'],
+        'area_classification': 'district'
+    }
+    cf.post_if_not_exist("results", result, {"election_id": result['election_id'], "area_id": result['area_id']})
+    summary = [
+        {'name': 'eligibles', 'value': int(row['VOL_SEZNAM'])},
+        {'name': 'attendees', 'value': int(row['VYD_OBALKY'])},
+        {'name': 'received_ballots', 'value': int(row['ODEVZ_OBAL'])},
+        {'name': 'valid_votes', 'value': int(row['PL_HL_CELK'])}
+    ]
+    cf.put_single_property_if_not_exist("results", result, {"election_id": result['election_id'], "area_id": result['area_id']}, 'summary', summary)
 
 # COUNTS
-#with open(path + "ept2p.xml") as fd:
-#    vts = xmltodict.parse(fd.read())
+with open(path + "ept2p.xml") as fd:
+    vts = xmltodict.parse(fd.read())
 
-#def n2(i):
-#    if i < 10:
-#        return '0' + str(i)
-#    else:
-#        return str(i)
+def n2(i):
+    if i < 10:
+        return '0' + str(i)
+    else:
+        return str(i)
 
 n2id = {}
 #row = vts['EP_T2P']['EP_T2P_ROW'][0]
@@ -46,7 +46,7 @@ parties = []
 for p in ar:
     for oi in p['other_identifiers']:
         if oi['election_id'] == election_id:
-            n2id[oi['identifier']] = p['id']
+            n2id[oi['identifier']] = p['identifier']
             parties.append(oi['identifier'])
 
 last_district = '0'
@@ -68,13 +68,13 @@ for row in vts['EP_T2P']['EP_T2P_ROW']:
                 try:
                     counts.append(countsobj[party])
                 except:
-                    counts.append({'votes': 0, 'option_id': n2id[party]})
+                    counts.append({'votes': 0, 'option_identifier': n2id[party]})
             cf.put_single_property_if_not_exist("results", last_result, {"election_id": last_result['election_id'], "area_id": last_result['area_id']}, 'counts', counts)
             countsobj = {}
             counts = []
         last_district = row['OBEC']+'-'+row['OKRSEK']
     
-    countsobj[row['ESTRANA']] = {'votes': int(row['POC_HLASU']), 'option_id': n2id[row['ESTRANA']]}
+    countsobj[row['ESTRANA']] = {'votes': int(row['POC_HLASU']), 'option_identifier': n2id[row['ESTRANA']]}
     last_result = result
 
 # put the last one
@@ -82,7 +82,7 @@ for party in parties:
     try:
         counts.append(countsobj[party])
     except:
-        counts.append({'votes': 0, 'option_id': n2id[party]})
+        counts.append({'votes': 0, 'option_identifier': n2id[party]})
 cf.put_single_property_if_not_exist("results", result, {"election_id": result['election_id'], "area_id": result['area_id']}, 'counts', counts)
 #    for k in n2id:
 #        counts.append({'option': n2id[k],'votes': int(row['HLASY_' + k])})
